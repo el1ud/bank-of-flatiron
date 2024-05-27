@@ -1,11 +1,11 @@
+
 import React from "react";
 import Transaction from "./Transaction";
 
-const TransactionsList = ({ transactions }) => {
-  // Ensure transactions is defined and is an array
-  if (!transactions || !Array.isArray(transactions)) {
-    return null;
-  }
+function TransactionsList({ transactions, searchTerm }) {
+  const filteredTransactions = transactions.filter(transaction =>
+    transaction.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <table className="ui celled striped padded table">
@@ -24,18 +24,12 @@ const TransactionsList = ({ transactions }) => {
             <h3 className="ui center aligned header">Amount</h3>
           </th>
         </tr>
-        {transactions.map((transaction, index) => (
-          <Transaction
-            key={index}
-            date={transaction.date}
-            description={transaction.description}
-            category={transaction.category}
-            amount={transaction.amount}
-          />
+        {filteredTransactions.map(transaction => (
+          <Transaction key={transaction.id} transaction={transaction} />
         ))}
       </tbody>
     </table>
   );
-};
+}
 
 export default TransactionsList;
